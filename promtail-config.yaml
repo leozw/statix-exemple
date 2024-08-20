@@ -1,0 +1,28 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /var/log/positions.yaml
+
+clients:
+  - url: "https://loki.elvenobservability.com/loki/api/v1/push"
+    headers:
+      X-Scope-OrgID: "statix"
+      Authorization: "Bearer <API_TOKEN>"     
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          __path__: /var/log/*log
+  - job_name: spring-app
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: spring-app
+          __path__: /var/log/spring-app.log
